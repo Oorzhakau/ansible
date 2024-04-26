@@ -1,0 +1,58 @@
+- hosts: webserver
+
+  tasks:
+     - name: update cache apt
+       ansible.builtin.apt:
+         update_cache: yes
+       tags: update_cache
+
+     - name: install git
+       ansible.builtin.apt:
+         name: git
+         state: present
+         update_cache: yes
+       become: true
+       tags: [install_app]
+     
+     - name: install make
+       ansible.builtin.apt:
+         name: make
+         state: present
+       become: true
+       tags: [install_app]
+
+     - name: add user sansa
+       ansible.builtin.user:
+         name: sansa
+         comment: Sansa
+         state: present
+       become: true
+       tags: create_user
+   
+     - name: add user tirion
+       ansible.builtin.user:
+         name: tirion
+         comment: Tirion
+         state: present
+       become: true
+       tags: create_user
+
+     - name: Install the gpg key for nodejs LTS
+       apt_key:
+         url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+         state: present
+       tags: install_app
+
+     - name: Install the nodejs LTS repos
+       apt_repository:
+         repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+         state: present
+         update_cache: yes
+       tags: install_app
+
+     - name: Install the nodejs
+       apt:
+         name: nodejs
+         state: present
+       tags: install_app     
+     
