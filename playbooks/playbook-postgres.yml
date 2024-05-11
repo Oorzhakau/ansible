@@ -1,0 +1,6 @@
+- hosts: dbservers
+  tasks:
+    - name: update postgresql config
+      ansible.builtin.template:
+        src: ../files/postgres/postgresql.conf.j2
+        dest: /var/tmp/postgresql.conf

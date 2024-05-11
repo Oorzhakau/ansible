@@ -9,3 +9,6 @@ git-remove:
 
 variables:
 	ansible-playbook ./playbooks/playbook-variables.yml -i inventory.ini
+
+info:
+	ansible webserver -i inventory.ini -m setup | less
