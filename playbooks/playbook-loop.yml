@@ -1,0 +1,50 @@
+- hosts: webserver
+  gather_facts: no
+  vars:
+    users:
+      - { name: sansa, groups: ansible }
+      - { name: jaime, groups: ansible }
+      - { name: robert, groups: ansible }
+   
+  tasks:
+      - name: install git
+        ansible.builtin.apt:
+          name: git
+          state: present
+        become: yes
+      
+      - name: create group
+        group:
+          name: ansible
+          state: present
+        become: yes
+
+      - name: create users
+        ansible.builtin.user:
+          name: "{{ item.name }}"
+          state: present
+          groups: "{{ item.groups }}"
+        loop: "{{ users }}"
+        become: yes
+
+      - name: add gitconfig
+        ansible.builtin.template:
+          src: ../files/users/gitconfig.j2
+          dest: "/home/{{ item.name }}/.gitconfig"
+        loop: "{{ users }}"
+        become: yes
+
+      - name: create dir
+        ansible.builtin.file:
+          path: "/home/{{ item.name }}/.ssh"
+          state: directory
+          mode: "0755"
+        loop: "{{ users }}"
+        become: yes
+     
+      - name: add ssh key
+        ansible.builtin.copy:
+          src: ../files/users/id_rsa.pub
+          dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+        loop: "{{ users }}"
+        become: yes

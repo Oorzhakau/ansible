@@ -12,3 +12,6 @@ variables:
 
 info:
 	ansible webserver -i inventory.ini -m setup | less
+
+users:
+	ansible-playbook ./playbooks/playbook-loop.yml -i inventory.ini
