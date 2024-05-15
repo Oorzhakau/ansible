@@ -1,0 +1,46 @@
+- hosts: webserver
+  vars:
+    app:
+      - cowsay
+      - nginx
+    root_dir: /var/www/html
+    nginx_port: 80
+
+  tasks:
+    - name: "install {{ app }}"
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ app }}"
+      become: yes
+
+    - name: generate cowsay
+      ansible.builtin.shell: "cowsay \"This is server {{ server_name }}\""
+      register: cowsay_result
+
+    - name: update index page
+      ansible.builtin.template:
+        src: ../files/cowsay/index.html
+        dest: "{{root_dir}}/index.html"
+      notify:
+        - restart nginx
+      become: yes
+    
+    - name: update nginx config
+      ansible.builtin.template:
+        src: ../files/cowsay/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify:
+        - restart nginx
+      become: yes
+
+    - name: print cowsay_result
+      ansible.builtin.debug:
+        var: cowsay_result
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      become: yes

@@ -15,3 +15,6 @@ info:
 
 users:
 	ansible-playbook ./playbooks/playbook-loop.yml -i inventory.ini
+
+cowsay:
+	ansible-playbook ./playbooks/playbook-cowsay.yml -i inventory.ini
