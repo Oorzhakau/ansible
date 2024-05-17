@@ -1,0 +1,23 @@
+- hosts: webserver
+
+  tasks:
+     - name: update cache apt
+       ansible.builtin.apt:
+         update_cache: yes
+       tags: [update_cache]
+
+     - name: install git
+       ansible.builtin.apt:
+         name: git
+         state: present
+         update_cache: yes
+       become: true
+       tags: [install_app]
+     
+     - name: set ssh
+       ansible.posix.authorized_key:
+         user: sansa
+         state: present
+         key: "{{ lookup('file', '../files/ssh/id_rsa.pub') }}"
+       tags: [add_ssh]
+       become: yes

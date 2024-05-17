@@ -3,3 +3,8 @@ roles:
      version: 1.9.6
    - name: geerlingguy.postgresql
    - name: geerlingguy.nodejs
+
+collections:
+  - name: geerlingguy.php_roles
+    version: 0.9.3
+  - name: ansible.posix

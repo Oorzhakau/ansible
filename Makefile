@@ -24,3 +24,6 @@ role:
 
 dev-role:
 	ansible-playbook ./playbooks/playbook-dev_role.yml -i inventory.ini
+
+ssh:
+	ansible-playbook ./playbooks/playbook-ssh.yml -i inventory.ini -t add_ssh
