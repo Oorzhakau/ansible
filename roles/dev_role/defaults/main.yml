@@ -1,0 +1,4 @@
+---
+# defaults file for dev_role
+user: test_user_role
+password: 123456

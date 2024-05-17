@@ -18,5 +18,9 @@ users:
 
 cowsay:
 	ansible-playbook ./playbooks/playbook-cowsay.yml -i inventory.ini
+
 role:
 	ansible-playbook ./playbooks/playbook-role.yml -i inventory.ini
+
+dev-role:
+	ansible-playbook ./playbooks/playbook-dev_role.yml -i inventory.ini

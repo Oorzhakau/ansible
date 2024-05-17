@@ -1,0 +1,18 @@
+---
+# tasks file for dev_role
+- name: Install Git Debian
+  import_tasks: debian.yml
+  when: ansible_facts['os_family']|lower == "debian"
+
+# create user
+- name: Add Users
+  ansible.builtin.user:
+    name: "{{ user }}"
+    password: "{{ password | hash('sha512') }}"
+    state: present
+
+- name: add gitconfig
+  ansible.builtin.template:
+     src: ../files/gitconfig.j2
+     dest: "/home/{{ user }}/.gitconfig"
+  become: yes

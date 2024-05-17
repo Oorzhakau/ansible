@@ -1,0 +1,8 @@
+- name: exec dev role
+  hosts: webserver
+
+  roles:
+    - role: '../roles/dev_role'
+  vars:
+    - user: test_dev_role_1
+  become: yes
